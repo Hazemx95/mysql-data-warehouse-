@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS Sliver_crm_cust_info(
     cst_lastname VARCHAR(30),
     cst_marital_status VARCHAR(20),
     cst_gndr VARCHAR(20),
-    cst_create_date VARCHAR(40) DEFAULT NULL
+    cst_create_date VARCHAR(40) DEFAULT NULL,
+    dwh_creationdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 DESC Sliver_crm_cust_info;
 DROP TABLE IF EXISTS Sliver_prd_info;
@@ -19,7 +20,8 @@ CREATE TABLE IF NOT EXISTS Sliver_prd_info
     prd_cost        INT,
     prd_line        NVARCHAR(50),
     prd_start_dt    DATE,
-    prd_end_dt      DATE
+    prd_end_dt      DATE,
+    dwh_creationdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 DESC Sliver_prd_info;
 DROP TABLE IF EXISTS Sliver_crm_sales_details;
@@ -33,6 +35,16 @@ CREATE TABLE IF NOT EXISTS Sliver_crm_sales_details
     sls_due_dt      DATE,
     sls_sales       INT,
     sls_quantity    INT,
-    sls_price       INT
+    sls_price       INT,
+    dwh_creationdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 DESC Sliver_crm_sales_details;
+DROP TABLE IF EXISTS Sliver_erp_cust_date;
+
+CREATE TABLE IF NOT EXISTS Sliver_erp_cust_date
+(
+   CID VARCHAR(30),
+   BDATE DATE ,
+   GENDER VARCHAR(10)
+);
+DESC Sliver_erp_cust_date

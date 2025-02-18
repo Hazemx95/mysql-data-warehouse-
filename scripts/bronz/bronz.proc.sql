@@ -29,6 +29,12 @@ FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
+LOAD DATA INFILE '/var/lib/mysql-files/datasets/source_erp/CUST_AZ12.csv'
+INTO TABLE bronz_erp_cust_date
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
 DELIMITER $$
 CREATE PROCEDURE LoadBronzeTables()
 BEGIN
@@ -48,6 +54,7 @@ BEGIN
     TRUNCATE TABLE bronz_crm_cust_info;
     TRUNCATE TABLE bronz_prd_info;
     TRUNCATE TABLE bronz_crm_sales_details;
+    TRUNCATE TABLE bronz_erp_cust_date;
     
     -- You can add any additional logic here for data processing or transformation
     -- For example, data cleansing, aggregation, etc.

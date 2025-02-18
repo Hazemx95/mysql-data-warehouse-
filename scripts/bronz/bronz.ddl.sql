@@ -1,3 +1,6 @@
+-- Active: 1739774225116@@mysql-db@3306@datawarehouse
+-- MUST BE USE THE NAMING CONVENTION --
+USE datawarehouse;
 DROP TABLE IF EXISTS bronz_crm_cust_info; 
 CREATE TABLE IF NOT EXISTS bronz_crm_cust_info(
     cst_id VARCHAR(30),
@@ -5,9 +8,10 @@ CREATE TABLE IF NOT EXISTS bronz_crm_cust_info(
     cst_firstname VARCHAR(30),
     cst_lastname VARCHAR(30),
     cst_marital_status VARCHAR(20),
-    cst_gndr CHAR(20),
-    cst_create_date TIMESTAMP
+    cst_gndr VARCHAR(20),
+    cst_create_date VARCHAR(40) DEFAULT NULL
 );
+DESC bronz_crm_cust_info;
 DROP TABLE IF EXISTS bronz_prd_info;
 CREATE TABLE IF NOT EXISTS bronz_prd_info
 (
@@ -20,6 +24,7 @@ CREATE TABLE IF NOT EXISTS bronz_prd_info
     prd_start_dt    DATE,
     prd_end_dt      DATE
 );
+DESC bronz_prd_info;
 DROP TABLE IF EXISTS bronz_crm_sales_details;
 CREATE TABLE IF NOT EXISTS bronz_crm_sales_details
 (
@@ -33,4 +38,4 @@ CREATE TABLE IF NOT EXISTS bronz_crm_sales_details
     sls_quantity    INT,
     sls_price       INT
 );
-
+DESC bronz_crm_sales_details;

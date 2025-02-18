@@ -48,7 +48,7 @@ BEGIN
     TRUNCATE TABLE bronz_crm_cust_info;
     TRUNCATE TABLE bronz_prd_info;
     TRUNCATE TABLE bronz_crm_sales_details;
-
+    
     -- You can add any additional logic here for data processing or transformation
     -- For example, data cleansing, aggregation, etc.
 
@@ -56,7 +56,11 @@ BEGIN
     SET batch_end_time = CURRENT_DATE();
     
     -- Display end message with batch processing time
+    SELECT '##############################################';
     SELECT 'Batch Process Completed' , batch_end_time ;
+    SELECT '##############################################';
+    SELECT 'THE DIFFERENCE TIME BETWEEN START TIME AND END TIME ' , CAST(TIMESTAMPDIFF(SECOND,batch_start_time,batch_end_time) AS CHAR);
+
 END $$
 
 DELIMITER ;

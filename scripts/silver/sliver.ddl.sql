@@ -10,16 +10,17 @@ CREATE TABLE IF NOT EXISTS sliver_crm_cust_info(
     dwh_creationdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 DESC sliver_crm_cust_info;
-DROP TABLE IF EXISTS sliver_prd_info;
-CREATE TABLE IF NOT EXISTS sliver_prd_info
+DROP TABLE IF EXISTS sliver_crm_prd_info;
+CREATE TABLE IF NOT EXISTS sliver_crm_prd_info
 (
     prd_id          INT,
     prd_key         NVARCHAR(50),
+    prd_key_new     NVARCHAR(50),
     prd_nm          NVARCHAR(50),
     prd_cost        INT,
     prd_line        NVARCHAR(50),
-    prd_start_dt    VARCHAR(30),
-    prd_end_dt      VARCHAR(30),
+    prd_start_dt    DATE,
+    prd_end_dt      DATE,
     dwh_creationdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 DESC sliver_prd_info;

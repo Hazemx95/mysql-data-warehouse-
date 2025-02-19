@@ -34,3 +34,30 @@ SELECT *,CASE
 WHERE rn =1  AND t.check_null IS NOT NULL;
 
 --sliver_prd_info--
+
+INSERT INTO sliver_crm_prd_info (
+   prd_id,
+   prd_key,
+   prd_key_new,
+   prd_nm,
+   prd_cost,
+   prd_line,
+   prd_start_dt,
+   prd_end_dt
+)
+SELECT 
+prd.prd_id,
+prd_key,
+TRIM(SUBSTRING(prd.prd_key,7,LENGTH(prd.prd_key))) as prd_key_new,
+prd.prd_nm,
+prd.prd_cost,
+CASE TRIM(UPPER(prd.prd_line))
+    WHEN 'R' THEN 'ROLL'
+    WHEN 'S' THEN 'SINGLE'
+    WHEN 'M' THEN 'MARRAED'
+    WHEN 'T' THEN 'TOWER'
+    ELSE 'n/a'
+END AS prd_line,
+CAST(prd.prd_start_dt AS DATE) as prd_start_dt,
+CAST(DATE_SUB(LEAD(prd.prd_start_dt) OVER (PARTITION BY prd.prd_key ORDER BY prd.prd_start_dt), INTERVAL 1 DAY ) AS DATE) as prd_end_dt
+FROM bronz_crm_prd_info as prd ;

@@ -10,7 +10,7 @@ SELECT COUNT(*) FROM bronz_erp_cust_date;
 SELECT COUNT(*) FROM bronz_erp_cust_country;
 SELECT COUNT(*) FROM bronz_erp_prd_maintenace;
 
-
+-- SHOW ALL THE TABLE IN PROJECT
 SELECT * FROM bronz_crm_cust_info;
 SELECT * FROM bronz_crm_prd_info;
 SELECT * FROM bronz_crm_sales_details;

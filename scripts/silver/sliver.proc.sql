@@ -1,3 +1,4 @@
+-- sliver_cust_info---
 INSERT INTO sliver_crm_cust_info(
     cst_id,
     cst_key,
@@ -31,3 +32,5 @@ SELECT *,CASE
     ,ROW_NUMBER()over(PARTITION BY crm_cust.cst_id ORDER BY crm_cust.cst_id) as rn  FROM bronz_crm_cust_info as crm_cust where crm_cust.cst_id IS NOT NULL
 )t
 WHERE rn =1  AND t.check_null IS NOT NULL;
+
+--sliver_prd_info--

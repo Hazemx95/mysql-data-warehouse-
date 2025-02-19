@@ -17,7 +17,7 @@ IGNORE 1 ROWS;
 
 -- Load product data
 LOAD DATA INFILE '/var/lib/mysql-files/datasets/source_crm/prd_info.csv'
-INTO TABLE bronz_prd_info
+INTO TABLE bronz_crm_prd_info
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
@@ -31,6 +31,18 @@ IGNORE 1 ROWS;
 
 LOAD DATA INFILE '/var/lib/mysql-files/datasets/source_erp/CUST_AZ12.csv'
 INTO TABLE bronz_erp_cust_date
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA INFILE '/var/lib/mysql-files/datasets/source_erp/LOC_A101.csv'
+INTO TABLE bronz_erp_cust_country
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA INFILE '/var/lib/mysql-files/datasets/source_erp/PX_CAT_G1V2.csv'
+INTO TABLE bronz_erp_prd_maintenace
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
@@ -52,7 +64,7 @@ BEGIN
     -- Step 1: Truncate tables before processing new data
     SET starttime = CURRENT_DATE();
     TRUNCATE TABLE bronz_crm_cust_info;
-    TRUNCATE TABLE bronz_prd_info;
+    TRUNCATE TABLE bronz_crm_prd_info;
     TRUNCATE TABLE bronz_crm_sales_details;
     TRUNCATE TABLE bronz_erp_cust_date;
     

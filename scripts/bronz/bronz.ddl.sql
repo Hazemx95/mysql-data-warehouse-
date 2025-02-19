@@ -16,7 +16,6 @@ DROP TABLE IF EXISTS bronz_prd_info;
 CREATE TABLE IF NOT EXISTS bronz_prd_info
 (
     prd_id          INT,
-    cat_id          NVARCHAR(50),
     prd_key         NVARCHAR(50),
     prd_nm          NVARCHAR(50),
     prd_cost        INT,
@@ -39,3 +38,33 @@ CREATE TABLE IF NOT EXISTS bronz_crm_sales_details
     sls_price       INT
 );
 DESC bronz_crm_sales_details;
+
+DROP TABLE IF EXISTS bronz_erp_cust_date;
+CREATE TABLE IF NOT EXISTS bronz_erp_cust_date
+(
+   CID VARCHAR(30),
+   BDATE DATE ,
+   GENDER VARCHAR(10)
+);
+DESC bronz_erp_cust_date
+
+DROP TABLE IF EXISTS bronz_erp_cust_country;
+CREATE TABLE IF NOT EXISTS bronz_erp_cust_country
+(
+   CID VARCHAR(40),
+   CNTRY VARCHAR(40)
+);
+DESC bronz_erp_cust_country
+
+DROP TABLE IF EXISTS bronz_erp_prd_maintenace;
+CREATE TABLE IF NOT EXISTS bronz_erp_prd_maintenace
+(
+   ID VARCHAR(30),
+   CAT VARCHAR(30),
+   SUBCAT VARCHAR(30),
+   MAINTENANCE VARCHAR(30)
+
+);
+DESC bronz_erp_prd_maintenace;
+
+ALTER TABLE bronz_prd_info RENAME TO bronz_crm_prd_info;

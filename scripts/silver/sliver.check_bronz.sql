@@ -48,3 +48,8 @@ SELECT * FROM bronz_crm_prd_info as prd ;
 
 -- check for startdate less than end date or have overlape between dates 
 SELECT prd.prd_key,CAST(prd.prd_start_dt AS DATE) ,CAST(DATE_SUB(LEAD(prd.prd_start_dt) OVER (PARTITION BY prd.prd_key ORDER BY prd.prd_start_dt), INTERVAL 1 DAY ) AS DATE) as prd_end_dt_test FROM bronz_crm_prd_info as prd ;
+
+
+-- bronz_sales_information ---
+
+SELECT * FROM bronz_crm_sales_details as sls WHERE sls.sls_prd_key  IN (SELECT prd.prd_key_new FROM sliver_crm_prd_info as prd);

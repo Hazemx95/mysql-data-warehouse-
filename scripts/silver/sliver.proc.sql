@@ -1,4 +1,6 @@
+--######################################################################--
 -- sliver_cust_info---
+--######################################################################--
 INSERT INTO sliver_crm_cust_info(
     cst_id,
     cst_key,
@@ -33,7 +35,9 @@ SELECT *,CASE
 )t
 WHERE rn =1  AND t.check_null IS NOT NULL;
 
+--######################################################################--
 --sliver_prd_info--
+--######################################################################--
 
 INSERT INTO sliver_crm_prd_info (
    prd_id,
@@ -61,3 +65,4 @@ END AS prd_line,
 CAST(prd.prd_start_dt AS DATE) as prd_start_dt,
 CAST(DATE_SUB(LEAD(prd.prd_start_dt) OVER (PARTITION BY prd.prd_key ORDER BY prd.prd_start_dt), INTERVAL 1 DAY ) AS DATE) as prd_end_dt
 FROM bronz_crm_prd_info as prd ;
+

@@ -51,5 +51,13 @@ SELECT prd.prd_key,CAST(prd.prd_start_dt AS DATE) ,CAST(DATE_SUB(LEAD(prd.prd_st
 
 
 -- bronz_sales_information ---
-
+SELECT * FROM bronz_crm_sales_details;
 SELECT * FROM bronz_crm_sales_details as sls WHERE sls.sls_prd_key  IN (SELECT prd.prd_key_new FROM sliver_crm_prd_info as prd);
+
+SELECT sls.sls_cust_id FROM bronz_crm_sales_details as sls WHERE sls.sls_cust_id  IN (SELECT crm.cst_id FROM sliver_crm_cust_info as crm);
+-- check for white spaces 
+SELECT sls.sls_ord_num FROM bronz_crm_sales_details as sls WHERE sls.sls_ord_num!=TRIM(sls.sls_ord_num);
+SELECT sls.sls_ord_num FROM bronz_crm_sales_details as sls WHERE sls.sls_ord_num NOT LIKE 'SO%' AND sls.sls_ord_num != UPPER(sls.sls_ord_num);
+
+SELECT TO_DAYS(sls.sls_ship_dt) FROM bronz_crm_sales_details as sls WHERE TO_DAYS(sls.sls_ship_dt) = ' ' OR TO_DAYS(sls.sls_ship_dt) IS NULL OR TO_DAYS(sls.sls_ship_dt) =0  OR STR_TO_DATE(sls.sls_ship_dt, '%Y-%m-%d') IS NULL ;
+

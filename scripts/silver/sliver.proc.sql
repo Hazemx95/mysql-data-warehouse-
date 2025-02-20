@@ -66,3 +66,27 @@ CAST(prd.prd_start_dt AS DATE) as prd_start_dt,
 CAST(DATE_SUB(LEAD(prd.prd_start_dt) OVER (PARTITION BY prd.prd_key ORDER BY prd.prd_start_dt), INTERVAL 1 DAY ) AS DATE) as prd_end_dt
 FROM bronz_crm_prd_info as prd ;
 
+--######################################################################--
+--sliver_sales details--
+--######################################################################--
+
+SELECT 
+TRIM(BOTH ' ' FROM sls_ord_num),
+sls_prd_key,
+sls_cust_id,
+CASE 
+    WHEN TO_DAYS(sls.sls_order_dt) = ' ' OR TO_DAYS(sls.sls_order_dt) IS NULL OR TO_DAYS(sls.sls_order_dt) =0  OR STR_TO_DATE(sls.sls_order_dt, '%Y-%m-%d') IS NULL THEN NULL
+    ELSE DATE_FORMAT(sls.sls_order_dt,'%d-%m-%Y') 
+END AS sls_order_dt,
+CASE 
+    WHEN TO_DAYS(sls.sls_ship_dt) = ' ' OR TO_DAYS(sls.sls_ship_dt) IS NULL OR TO_DAYS(sls.sls_ship_dt) =0  OR STR_TO_DATE(sls.sls_ship_dt, '%Y-%m-%d') IS NULL THEN NULL
+    ELSE DATE_FORMAT(sls.sls_ship_dt,'%d-%m-%Y') 
+END AS sls_ship_dt,
+CASE 
+    WHEN TO_DAYS(sls.sls_due_dt) = ' ' OR TO_DAYS(sls.sls_due_dt) IS NULL OR TO_DAYS(sls.sls_due_dt) =0  OR STR_TO_DATE(sls.sls_due_dt, '%Y-%m-%d') IS NULL THEN NULL
+    ELSE DATE_FORMAT(sls.sls_due_dt,'%d-%m-%Y') 
+END AS sls_due_dt,
+sls_sales,
+sls_quantity,
+sls_price
+FROM bronz_crm_sales_details as sls;

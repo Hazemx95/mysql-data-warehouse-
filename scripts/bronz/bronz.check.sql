@@ -1,4 +1,4 @@
--- Active: 1739774225116@@mysql-db@3306@datawarehouse
+-- Active: 1739774225116@@mysql-db@3306@information_schema
 -- Active: 1739774225116@@mysql-db@3306@information_schema
 
 --- CHECK GFOR DATA COMPLETENESS IN BRONZ LAYER ---

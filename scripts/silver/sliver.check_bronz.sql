@@ -30,7 +30,7 @@ SELECT prd.prd_id , COUNT(*) FROM bronz_crm_prd_info as prd GROUP BY 1 HAVING CO
 
 SELECT  SUBSTRING(prd.prd_key,7,LENGTH(prd.prd_key)) FROM bronz_crm_prd_info as prd  WHERE SUBSTRING(prd.prd_key,7,LENGTH(prd.prd_key)) NOT IN (SELECT sls.sls_prd_key FROM bronz_crm_sales_details sls ) ;
 SELECT  SUBSTRING(prd.prd_key,7,LENGTH(prd.prd_key)) FROM bronz_crm_prd_info as prd  
-WHERE SUBSTRING(prd.prd_key,7,LENGTH(prd.prd_key)) IN (SELECT sls.sls_prd_key FROM bronz_crm_sales_details sls ) ;
+WHERE SUBSTRING(prd.prd_key,7,LENGTH(prd.prd_key))IN (SELECT sls.sls_prd_key FROM bronz_crm_sales_details sls ) ;
 
 SELECT sls.sls_prd_key FROM bronz_crm_sales_details sls ;
 
@@ -52,12 +52,37 @@ SELECT prd.prd_key,CAST(prd.prd_start_dt AS DATE) ,CAST(DATE_SUB(LEAD(prd.prd_st
 
 -- bronz_sales_information ---
 SELECT * FROM bronz_crm_sales_details;
+-- SELECT * FROM sliver_crm_prd_info;
 SELECT * FROM bronz_crm_sales_details as sls WHERE sls.sls_prd_key  IN (SELECT prd.prd_key_new FROM sliver_crm_prd_info as prd);
 
-SELECT sls.sls_cust_id FROM bronz_crm_sales_details as sls WHERE sls.sls_cust_id  IN (SELECT crm.cst_id FROM sliver_crm_cust_info as crm);
+SELECT sls.sls_cust_id FROM bronz_crm_sales_details as sls WHERE sls.sls_cust_id   IN (SELECT crm.cst_id FROM sliver_crm_cust_info as crm);
 -- check for white spaces 
 SELECT sls.sls_ord_num FROM bronz_crm_sales_details as sls WHERE sls.sls_ord_num!=TRIM(sls.sls_ord_num);
-SELECT sls.sls_ord_num FROM bronz_crm_sales_details as sls WHERE sls.sls_ord_num NOT LIKE 'SO%' AND sls.sls_ord_num != UPPER(sls.sls_ord_num);
+SELECT sls.sls_ord_num FROM bronz_crm_sales_details as sls WHERE sls.sls_ord_num NOT LIKE 'SO%' OR sls.sls_ord_num != UPPER(sls.sls_ord_num);
 
-SELECT TO_DAYS(sls.sls_ship_dt) FROM bronz_crm_sales_details as sls WHERE TO_DAYS(sls.sls_ship_dt) = ' ' OR TO_DAYS(sls.sls_ship_dt) IS NULL OR TO_DAYS(sls.sls_ship_dt) =0  OR STR_TO_DATE(sls.sls_ship_dt, '%Y-%m-%d') IS NULL ;
+SELECT TO_DAYS(sls.sls_ship_dt) FROM bronz_crm_sales_details as sls WHERE TO_DAYS(sls.sls_ship_dt) = ' ' OR TO_DAYS(sls.sls_ship_dt) IS NULL OR TO_DAYS(sls.sls_ship_dt) = 0  OR STR_TO_DATE(sls.sls_ship_dt, '%Y-%m-%d') IS NULL ;
 
+/* RULE (BUSINESS RULE) MUST BE MAKE A TRANSFORMATION TO FOLLOW THIS RULE */
+-- Sales = price * quantity --
+SELECT sls.sls_price , sls.sls_quantity,sls.sls_sales FROM bronz_crm_sales_details as sls ;
+SELECT sls.sls_price,sls.sls_quantity,sls.sls_sales , COUNT(*) over(),(SELECT COUNT(*) FROM bronz_crm_sales_details) FROM bronz_crm_sales_details as sls 
+WHERE sls.sls_sales != sls.sls_price*sls.sls_quantity 
+OR sls.sls_price <=0 OR sls.sls_quantity <=0 OR sls.sls_sales <=0 
+OR sls.sls_sales IS NULL OR sls.sls_price IS NULL OR sls.sls_quantity IS NULL;
+
+
+
+--SOLVE THIS ISSUE --
+SELECT sls.sls_sales,sls.sls_price,sls.sls_quantity,CASE
+    WHEN sls.sls_sales != sls.sls_price*sls.sls_quantity 
+    OR sls.sls_price <=0 OR sls.sls_quantity <=0 OR sls.sls_sales <=0 
+    OR sls.sls_sales IS NULL OR sls.sls_price IS NULL OR sls.sls_quantity IS NULL THEN sls.sls_quantity * ABS(sls.sls_price)
+    ELSE sls.sls_sales
+END AS sls_sales_new ,
+CASE 
+    WHEN sls.sls_price = 0 THEN NULL
+    WHEN sls.sls_price < 0 THEN ABS(sls.sls_price)
+    ELSE sls.sls_price
+END AS sls_price_new
+FROM bronz_crm_sales_details as sls  
+WHERE sls.sls_sales != sls.sls_price*sls.sls_quantity ;

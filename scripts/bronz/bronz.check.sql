@@ -1,7 +1,7 @@
+-- Active: 1739774225116@@mysql-db@3306@datawarehouse
 -- Active: 1739774225116@@mysql-db@3306@information_schema
--- Active: 1739774225116@@mysql-db@3306@information_schema
-
---- CHECK GFOR DATA COMPLETENESS IN BRONZ LAYER ---
+-- VALIDATION IN BRONZ LAYER --
+--- CHECK FOR DATA COMPLETENESS IN BRONZ LAYER ---
 USE datawarehouse ;
 SELECT COUNT(*) FROM bronz_crm_cust_info;
 SELECT COUNT(*) FROM bronz_crm_prd_info;

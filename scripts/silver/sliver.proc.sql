@@ -64,14 +64,26 @@ CASE TRIM(UPPER(prd.prd_line))
 END AS prd_line,
 CAST(prd.prd_start_dt AS DATE) as prd_start_dt,
 CAST(DATE_SUB(LEAD(prd.prd_start_dt) OVER (PARTITION BY prd.prd_key ORDER BY prd.prd_start_dt), INTERVAL 1 DAY ) AS DATE) as prd_end_dt
-FROM bronz_crm_prd_info as prd ;
+FROM bronz_crm_prd_info as prd 
+
 
 --######################################################################--
 --sliver_sales details--
 --######################################################################--
 
+INSERT INTO sliver_crm_sales_details(
+    sls_ord_num,
+    sls_prd_key,
+    sls_cust_id,
+    sls_order_dt,
+    sls_ship_dt ,
+    sls_due_dt ,
+    sls_quantity,
+    sls_price,
+    sls_sales
+)
 SELECT 
-TRIM(BOTH ' ' FROM sls_ord_num),
+TRIM(BOTH ' ' FROM sls_ord_num) AS sls_order_num,
 sls_prd_key,
 sls_cust_id,
 CASE 
@@ -86,7 +98,18 @@ CASE
     WHEN TO_DAYS(sls.sls_due_dt) = ' ' OR TO_DAYS(sls.sls_due_dt) IS NULL OR TO_DAYS(sls.sls_due_dt) =0  OR STR_TO_DATE(sls.sls_due_dt, '%Y-%m-%d') IS NULL THEN NULL
     ELSE DATE_FORMAT(sls.sls_due_dt,'%d-%m-%Y') 
 END AS sls_due_dt,
-sls_sales,
 sls_quantity,
-sls_price
-FROM bronz_crm_sales_details as sls;
+CASE 
+    WHEN sls.sls_price = 0 THEN NULL
+    WHEN sls.sls_price < 0 THEN ABS(sls.sls_price)
+    ELSE sls.sls_price
+END AS sls_price,
+CASE
+    WHEN sls.sls_sales != sls.sls_price*sls.sls_quantity 
+    OR sls.sls_price <=0 OR sls.sls_quantity <=0 OR sls.sls_sales <=0 
+    OR sls.sls_sales IS NULL OR sls.sls_price IS NULL OR sls.sls_quantity IS NULL THEN sls.sls_quantity * ABS(sls.sls_price)
+    ELSE sls.sls_sales
+END AS sls_sales 
+FROM bronz_crm_sales_details as sls
+
+

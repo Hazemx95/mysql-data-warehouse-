@@ -21,4 +21,6 @@ SELECT cust.prd_id , COUNT(*)  FROM sliver_crm_prd_info as cust GROUP BY 1 HAVIN
 -- EXPECTATION NO RESULT--
 SELECT  prd.prd_line FROM sliver_crm_prd_info as prd ;
 
-SELECT prd.prd_start_dt,prd.prd_end_dt FROM sliver_crm_prd_info as prd WHERE prd.prd_start_dt < prd.prd_end_dt;
+SELECT prd.prd_start_dt,prd.prd_end_dt FROM sliver_crm_prd_info as prd WHERE prd.prd_start_dt > prd.prd_end_dt;
+
+SELECT * FROM sliver_crm_sales_details as sls WHERE sls.sls_sales != sls.sls_price*sls.sls_quantity ;
